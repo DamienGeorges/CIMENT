@@ -1,0 +1,25 @@
+#!/bin/bash
+
+## OAR instructions ##
+#OAR -n simple_vector_shuffling_on_froggy
+#OAR --project teembio
+#OAR -l cpu=2,walltime=00:01:00
+#OAR -O log_vector_shufling.%jobid%.stdout
+#OAR -E log_vector_shufling.%jobid%.stderr
+
+## define some bash options
+set -e ## exit the script as soon as a function return an error
+
+## make some prints
+echo "running job is : ${0} on" hostname
+echo
+
+## load ciment environment and required modules
+source /applis/ciment/v2/env.bash
+module load R
+
+## run our R script
+R CMD BATCH "--args ${1} ${2} ${3}" scripts/simple_vector_shuffling.R /dev/stdout
+
+## quit the script
+exit $?
