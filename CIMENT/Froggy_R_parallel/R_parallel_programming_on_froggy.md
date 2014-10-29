@@ -1,5 +1,5 @@
 ---
-title: "Litle tutorial to run parallel R script on Froggy"
+title: "Little tutorial to run parallel R script on Froggy"
 author: "Damien G. - damien.georges2@gmail.com"
 date: "29/10/2014"
 output:
@@ -14,16 +14,16 @@ output:
 
 # Before starting
 The aim of this tutorial is to show how to set up and run a parallel loop over 16 cores on Froggy.
-I suppose here that you have an active [PERSEUS](https://perseus.ujf-grenoble.fr/) account and you have already correctly set up all ssh connexions to connect to Froggy cluster. If not please follow insturctions given on [accessing to cluster](https://ciment.ujf-grenoble.fr/wiki/index.php/Accessing_to_clusters) ciment wiki page.
+I suppose here that you have an active [PERSEUS](https://perseus.ujf-grenoble.fr/) account and you have already correctly set up all ssh connections to connect to Froggy cluster. If not please follow instructions given on [accessing to cluster](https://ciment.ujf-grenoble.fr/wiki/index.php/Accessing_to_clusters) CIMENT wiki page.
 
-Because of the architecture of froggy and the way that **R** parallel library is implemented, it is realy easy to use all ressource shared by a computing node (note: on Froggy, 1 node = 2 cpus = 16 cores). Build script that intent to use more ressources overcome the purpose of this tutorial. 
+Because of the architecture of Froggy and the way that **R** parallel library is implemented, it is really easy to use all resources shared by a computing node (note: on Froggy, 1 node = 2 cpus = 16 cores). Build a script that intent to use more resources overcome the purpose of this tutorial. 
 
-To make this example easy to follow and replicate please download and uncompress the associated archive file : .
+To make this example easy to follow and execute please download and uncompress the associated archive file : [Frog_R_parallel_test.zip](https://github.com/DamienGeorges/CIMENT/blob/master/CIMENT/Froggy_R_parallel/Frog_R_parallel_test.zip?raw=tru)
 
 
 
 # A simple (and silly) R programme using a parallel loop
-Here is a simple R programme that execute a function X times in parallel. The function used here is just a vector shuffling but can be anythingelse.
+Here is a simple R script that execute a function X times in parallel. The function used here is just a vector shuffling but can be anything-else. Our script will take 3 arguments as input parameters (see below) and will produce a .txt file containing a matrix of randomized vectors as output. Here the code :
 
 ```r
 ## get parameters given
@@ -93,13 +93,13 @@ This code is saved within [simple_vector_shuffling.R](scripts/simple_vector_shuf
 
 
 # OAR instructions
-Because Froggy is a collaborative cluster and to try to optimise ressources using and sharing, it is **FORBIDDEN TO RUN JOBS DIRECTLY** on ciment clusters. All jobs have to be submitted via OAR, a queuing managing system. Interested users can refer to ciment [OAR tutorial](https://ciment.ujf-grenoble.fr/wiki/index.php/OAR_tutorial) to benefit from all OAR functionalities.
-OAR files are in fact bash scripts containings some OAR instructions. OAR instuctions have to be declare after `#OAR ` flag. All common bash scripting command should be invoked.
+Because Froggy is a collaborative cluster and to try to optimize resources consuming and sharing, it is **FORBIDDEN TO RUN JOBS DIRECTLY** on CIMENT clusters. All jobs have to be submitted via OAR, a queuing job software. Interested users can refer to CIMENT [OAR tutorial](https://ciment.ujf-grenoble.fr/wiki/index.php/OAR_tutorial) to benefit from all OAR functionalities.
+OAR files are in fact bash scripts containing some OAR instructions. OAR instructions have to be declare after `#OAR ` flag. All common bash scripting command should be invoked.
 Here is exposed a quite simple OAR script skeleton we will use to run our R script. This script is adapted to Froggy cluster. The full script is store in [simple_vector_shuffling.oar](scripts/simple_vector_shuffling.oar).
 
 Here is described line by line our .oar file.
 
-Beacause it is a bash file, the first line must be:
+Because it is a bash file, the first line must be:
 ```bash
 #!/bin/bash
 ```
@@ -114,14 +114,14 @@ Then come the OAR instructions.
 ```
 Here a brief description of this options meaning :
 
-* `-n` : the name of oar campain
+* `-n` : the name of oar campaign
 * `--project` : the name of project you are belonging to
-* `-l` : the required ressources (here 2 cpus (i.e. 16 cores) during 1 minute)
-* `-O` and `-E` : the name of log files produce by jobs. `-O` for console outputs and `-E` for console errors. This files will be usefull in debugging code procedure.
+* `-l` : the required resources (here 2 cpus (i.e. 16 cores) during 1 minute)
+* `-O` and `-E` : the name of log files produce by jobs. `-O` for console outputs and `-E` for console errors. This files will be useful in debugging code procedure.
 
 **note** : An id will be associated to each oar job. The flag `%jobid%` is a wrapper to get this id.
 
-**note** : If your job exeed the `walltime` it will be automatically killed. The `walltime` correspond to the maximal time all required cores are reserved.
+**note** : If your job exceed the `walltime` it will be automatically killed. The `walltime` correspond to the maximal time all required cores are reserved.
 
 Then we can defined some bash scripting options, make some prints,...
 ```bash
@@ -134,9 +134,9 @@ hostname
 echo
 ```
 
-Finally, come the instructions for running our R programme:
+Finally, come the instructions for running our R script:
 
-1. First we have to load ciment environment and all modules required
+1. First we have to load CIMENT environment and all modules required
 ```bash
 ## load ciment environment and required modules
 source /applis/ciment/v2/env.bash
@@ -155,9 +155,9 @@ exit $?
 ```
 
 # Running the campain on Froggy
-Now we have our R and our OAR scripts ready we just need to run the campain.
+Now we have our R and our OAR scripts ready we just need to run the campaign.
 
-We first have to copy all needed stuff (scripts, data, packages,...) on Froggy. It's a good habbits to prefer to work in the `/scratch` directory insteas than in `/home` one. Here I'm in a directory that contains the `Frog_R_parallel_test` directory where all what I need is stored (scripts and data).
+We first have to copy all needed stuff (scripts, data, packages,...) on Froggy. It's a good habits to work in the `/scratch` directory instead than in `/home` one. Here I'm in a directory that contains the `Frog_R_parallel_test` directory where all what I need is stored (scripts and data).
 
 ```console
 > scp -r Frog_R_parallel_test froggy:/scratch/dgeorges/
@@ -169,7 +169,7 @@ simple_vector_shuffling.R                     100% 2398     2.3KB/s   00:00
 simple_vector_shuffling.oar                   100%  607     0.6KB/s   00:00    
 ```
 
-Then we have to log on froggy
+Then we have to log on Froggy
 ```console
 > ssh froggy 
 Last login: Mon Oct 27 17:57:39 2014 from killeen.ujf-grenoble.fr
@@ -209,19 +209,19 @@ Quotas:
 Now we go on our `/scratch` working directory
 
 ```console
-[dgeorges@froggy1 ~]$ cd /scratch/dgeorges/Frog_R_parallel_test/
+> cd /scratch/dgeorges/Frog_R_parallel_test/
 ```
 
 Here we have to add execution permission of our .oar script.
 ```console
-[dgeorges@froggy1 Frog_R_parallel_test]$ chmod +x scripts/simple_vector_shuffling.oar
+> chmod +x scripts/simple_vector_shuffling.oar
 ```
 
 Then we just have to run our .oar script with `oarsub -S`
 
-1. We can choose to run a single instance of the script giving to our script explicitely the parameters it needs ( here an input file / a number of randomisation to do / a output file). Each apram has to be separated by a blank space.
+1. We can choose to run a single instance of the script giving to our script explicitly the parameters it needs ( here an input file / a number of randomization to do / a output file). Each param has to be separated by a blank space.
 ```console
-[dgeorges@froggy1 Frog_R_parallel_test]$ oarsub -S './scripts/simple_vector_shuffling.oar input_dat/vet_in_1.txt 100 vet_out_1.txt'
+> oarsub -S './scripts/simple_vector_shuffling.oar input_dat/vet_in_1.txt 100 vet_out_1.txt'
 [ADMISSION RULE] Modify resource description with type constraints
 [COMPUTE TYPE] Setting compute=YES
 [ADMISSION RULE] Antifragmentation activated
@@ -229,28 +229,28 @@ Then we just have to run our .oar script with `oarsub -S`
 [ADMISSION RULE] Antifrag converts query into /network_address=1
 OAR_JOB_ID=4410502
 ```
-We can access to campain info via the `OAR_JOB_ID` and `oarstat -j` command:
+We can access to campaign info via the `OAR_JOB_ID` and `oarstat -j` command:
 ```console
-[dgeorges@froggy1 Frog_R_parallel_test]$ oarstat -j 4410502
+> oarstat -j 4410502
 Job id    S User     Duration   System message
 --------- - -------- ---------- ------------------------------------------------
 4410502   T dgeorges 0:00:34    R=16,W=0:1:0,J=B,N=simple_vector_shuffling_on_froggy,P=teembio (Karma=0.484)
 ```
-Here the satut `T` indicates that our capain is over. We should ave a look at log files:
+Here the statute `T` indicates that our campaign is over. We should ave a look at log files:
 
 * .stderr file should be empty if no error occur
 ```console
-[dgeorges@froggy1 Frog_R_parallel_test]$ cat log_vector_shufling.4410502.stderr
+> cat log_vector_shufling.4410502.stderr
 ```
 
 * .stdout file should contains all R printed console outputs 
 ```console
-[dgeorges@froggy1 Frog_R_parallel_test]$ cat log_vector_shufling.4410502.stdout
+> cat log_vector_shufling.4410502.stdout
 ```
 
 If all goes smoothly we should have `vet_out_1.txt` (our script output) in our working directory.
 ```console
-[dgeorges@froggy1 Frog_R_parallel_test]$ ls
+> ls
 input_dat                           parameters
 log_vector_shufling.4410502.stderr  scripts
 log_vector_shufling.4410502.stdout  vet_out_1.txt
@@ -258,9 +258,9 @@ log_vector_shufling.4410502.stdout  vet_out_1.txt
 
 That works!!
 
-2. The second way to run a campainis to constuct a parameter file where each line contains parameters for one job. Here an example with the file [params_simple_vector_shuffling.txt](parameters/params_simple_vector_shuffling.txt). 
+2. The second way to run a campaign to construct a parameter file where each line contains parameters for one job. Here an example with the file [params_simple_vector_shuffling.txt](parameters/params_simple_vector_shuffling.txt). 
 ```console
-[dgeorges@froggy1 Frog_R_parallel_test]$ cat parameters/params_simple_vector_shuffling.txt
+> cat parameters/params_simple_vector_shuffling.txt
 input_dat/vet_in_1.txt 100 vet_out_1.txt
 input_dat/vet_in_2.txt 200 vet_out_2.txt
 input_dat/vet_in_3.txt 150 vet_out_3.txt
@@ -269,7 +269,7 @@ input_dat/vet_in_3.txt 150 vet_out_3.txt
 Our job will be the executed several times with given different set of parameters. To do that we have to use `--array-param-file` flag.
 
 ```console
-[dgeorges@froggy1 Frog_R_parallel_test]$ oarsub -S ./scripts/simple_vector_shuffling.oar --array-param-file parameters/params_simple_vector_shuffling.txt
+> oarsub -S ./scripts/simple_vector_shuffling.oar --array-param-file parameters/params_simple_vector_shuffling.txt
 [ADMISSION RULE] Modify resource description with type constraints
 [COMPUTE TYPE] Setting compute=YES
 [ADMISSION RULE] Antifragmentation activated
@@ -283,22 +283,22 @@ OAR_JOB_ID=4410515
 OAR_ARRAY_ID=4410513
 ```
 
-Here we see that our campain as an id `OAR_ARRAY_ID` but also all individual jobs corresponding to different set of parameters `OAR_JOB_ID`. 
+Here we see that our campaign as an id `OAR_ARRAY_ID` but also all individual jobs corresponding to different set of parameters `OAR_JOB_ID`. 
 
-You should get info on each job as shown in previous point with `oarstat -j` or on the full campain with `oarstat --array`
+You should get info on each job as shown in previous point with `oarstat -j` or on the full campaign with `oarstat --array`
 ```console
-[dgeorges@froggy1 Frog_R_parallel_test]$ oarstat --array 4410513
+> oarstat --array 4410513
 Job id    A. id     index S User     Duration   System message
 --------- --------- ----- - -------- ---------- --------------------------------
 4410513   4410513   1     T dgeorges 0:26:04    R=16,W=0:1:0,J=B,N=simple_vector_shuffling_on_froggy,P=teembio (Karma=0.484)
 4410514   4410513   2     T dgeorges 0:26:04    R=16,W=0:1:0,J=B,N=simple_vector_shuffling_on_froggy,P=teembio (Karma=0.484)
 4410515   4410513   3     T dgeorges 0:25:50    R=16,W=0:1:0,J=B,N=simple_vector_shuffling_on_froggy,P=teembio (Karma=0.484)
 ```
-Here we see that all job have been executed succeesfully :grinning:
+We see that all job have been executed successfully :) .
 So 2 log files and 1 output file by job have been produced.
 
 ```console
-[dgeorges@froggy1 Frog_R_parallel_test]$ ls
+> ls
 input_dat                           log_vector_shufling.4410515.stderr
 log_vector_shufling.4410502.stderr  log_vector_shufling.4410515.stdout
 log_vector_shufling.4410502.stdout  parameters
@@ -312,7 +312,7 @@ log_vector_shufling.4410514.stdout  vet_out_3.txt
 Following this tutorial you should be able to run over 16 cores a simple function in R. Much more high quality documentation on OAR, Froggy, ... is available on [ciment wiki page](https://ciment.ujf-grenoble.fr/wiki/).. To be consulted without moderation.
 
 # Feel free to contribute
-Any comment, modification, improvement, ... on this document is more than welcome!
+Any comment, modification, improvement, ... on this document is more than welcome! Cheers.
 
 
 
